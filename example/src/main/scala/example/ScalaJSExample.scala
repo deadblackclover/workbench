@@ -11,7 +11,7 @@ case class Point(x: Int = Random.nextInt(255),
   def /(d: Int) = Point(x / d, y / d)
 }
 
-@JSExportTopLevel("example.ScalaJSExample")
+@JSExportTopLevel("ScalaJSExample")
 object ScalaJSExample {
   val ctx =
     document
