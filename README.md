@@ -16,7 +16,7 @@ Installation
 - Add to your `project/plugins.sbt`
 ```scala
 // for sbt 1.0+
-addSbtPlugin("com.lihaoyi" % "workbench" % "0.4.1")
+addSbtPlugin("com.lihaoyi" % "workbench" % "0.5.0")
 // for sbt 0.13.x
 addSbtPlugin("com.lihaoyi" % "workbench" % "0.3.1")
 ```
@@ -31,7 +31,7 @@ enablePlugins(WorkbenchPlugin)
 
 ### Usage
 
-Once the above installation steps are completed, simply open your desired HTML file via `http://localhost:12345` with the URL path being any file part relative to your project root. e.g. `localhost:12345/target/scala-2.12/classes/index.html`. This should serve up the HTML file and connect it to workbench.
+Once the above installation steps are completed, simply open your desired HTML file via `http://localhost:12345` with the URL path being any file part relative to your project root. e.g. `localhost:12345/target/scala-2.13/classes/index.html`. This should serve up the HTML file and connect it to workbench.
 
 If you want to serve a defaultRootObject on `http://localhost:12345` and serve only files from a root directory you can set this via:
 ```scala
@@ -107,7 +107,7 @@ With this done, you should be receiving the SBT logspam (compilation, warnings, 
 To develop, go into `example/` and run `sbt ~fastOptJS`. Then you can go to
 
 ```
-http://localhost:12345/target/scala-2.12/classes/index-dev.html
+http://localhost:12345/target/scala-2.13/classes/index-dev.html
 ```
 
 and see a small sierpinski-triangle application. Editing the code within `example/` should cause the SBT log-spam to appear in the browser console, and changes (e.g. changing the color of the background fill) should cause a recompile and updating of the browser animation.

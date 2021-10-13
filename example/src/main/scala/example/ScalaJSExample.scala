@@ -3,24 +3,21 @@ import scala.scalajs.js.annotation.{JSExportTopLevel, JSExport}
 import org.scalajs.dom.{html, document, window, CanvasRenderingContext2D}
 import scala.util.Random
 
-case class Point(x: Int = Random.nextInt(255), 
-                 y: Int = Random.nextInt(255), 
-                 dx: Int = Random.nextInt(3) - 1, 
-                 dy: Int = Random.nextInt(3) - 1){
+case class Point(x: Int = Random.nextInt(255), y: Int = Random.nextInt(255), dx: Int = Random.nextInt(3) - 1, dy: Int = Random.nextInt(3) - 1) {
   def +(p: Point) = Point(x + p.x, y + p.y)
-  def /(d: Int) = Point(x / d, y / d)
+  def /(d: Int)   = Point(x / d, y / d)
 }
 
 @JSExportTopLevel("ScalaJSExample")
 object ScalaJSExample {
   val ctx =
     document
-       .getElementById("canvas")
-       .asInstanceOf[html.Canvas]
-       .getContext("2d")
-       .asInstanceOf[CanvasRenderingContext2D]
+      .getElementById("canvas")
+      .asInstanceOf[html.Canvas]
+      .getContext("2d")
+      .asInstanceOf[CanvasRenderingContext2D]
 
-  var p = Point(128, 128)
+  var p     = Point(128, 128)
   var color = "black"
 
   var enemiess = List.fill(10)(Point())

@@ -4,7 +4,9 @@ inThisBuild(Def.settings(
   version := "0.5.0",
   organization := "com.lihaoyi",
   scalaVersion := "2.12.11",
-  scalacOptions ++= Seq("-feature", "-deprecation"),
+  scalacOptions ++= Seq("-feature", "-deprecation", "-Ywarn-unused-import"),
+  semanticdbEnabled := true, // enable SemanticDB
+  semanticdbVersion := scalafixSemanticdb.revision, // only required for Scala 2.x
 ))
 
 lazy val root = project.in(file("."))
