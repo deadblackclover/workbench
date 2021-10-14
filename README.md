@@ -104,6 +104,8 @@ With this done, you should be receiving the SBT logspam (compilation, warnings, 
 
 # Development
 
+To use the library in the example, you need to publish the library locally `sbt publishLocal`. Also, do not forget to update the version in `plugins.sbt` to the local version of the library.
+
 To develop, go into `example/` and run `sbt ~fastOptJS`. Then you can go to
 
 ```

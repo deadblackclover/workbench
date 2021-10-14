@@ -15,17 +15,12 @@ object WorkbenchBasePlugin extends AutoPlugin {
   override def requires: AutoPlugin = ScalaJSPlugin
 
   object autoImport {
-
     sealed trait StartMode
 
     object WorkbenchStartModes {
-
       case object OnCompile extends StartMode
-
       case object OnSbtLoad extends StartMode
-
       case object Manual extends StartMode
-
     }
 
     val localUrl                   = settingKey[(String, Int)]("localUrl")
@@ -35,6 +30,7 @@ object WorkbenchBasePlugin extends AutoPlugin {
       settingKey[StartMode]("should the web server start on sbt load, on compile, or only by manually running `startWorkbenchServer`")
     val startWorkbenchServer = taskKey[Unit]("start local web server manually")
   }
+
   import autoImport._
   import WorkbenchStartModes._
 
@@ -44,7 +40,7 @@ object WorkbenchBasePlugin extends AutoPlugin {
     localUrl := ("localhost", 12345),
     workbenchDefaultRootObject := None,
     workbenchCompression := false,
-    (extraLoggers in ThisBuild) := {
+    (ThisBuild / extraLoggers) := {
       val clientLogger = new AbstractAppender("FakeAppender", null, PatternLayout.createDefaultLayout(), true, Array.empty) {
         override def append(event: Log4JLogEvent): Unit = {
 
@@ -78,13 +74,13 @@ object WorkbenchBasePlugin extends AutoPlugin {
     },
     workbenchStartMode := OnSbtLoad,
     startWorkbenchServer := server.value.startServer(),
-    (compile in Compile) := (compile in Compile)
+    (Compile / compile) := (Compile / compile)
       .dependsOn(Def.task {
         if (workbenchStartMode.value == OnCompile) server.value.startServer()
       })
       .value,
-    (onUnload in Global) := {
-      (onUnload in Global).value.compose { state =>
+    (Global / onUnload) := {
+      (Global / onUnload).value.compose { state =>
         server.value.kill()
         state
       }

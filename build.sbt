@@ -13,12 +13,12 @@ lazy val root = project.in(file("."))
   .enablePlugins(SbtPlugin)
   .settings(
     name := "workbench",
-    unmanagedSourceDirectories in Compile += baseDirectory.value /  "shared" / "main" / "scala",
-    // unmanagedSourceDirectories in Test += baseDirectory.value / "shared" / "test" / "scala",
-    // publishArtifact in Test := false,
-    (resources in Compile) += {
-      (fullOptJS in (client, Compile)).value
-      (artifactPath in (client, Compile, fullOptJS)).value
+    Compile / unmanagedSourceDirectories += baseDirectory.value /  "shared" / "main" / "scala",
+    (Compile / resources) += {
+      (client / Compile / fullOptJS).value
+      (client / Compile / fullOptJS / artifactPath).value
+      // (fullOptJS in (client, Compile)).value
+      // (artifactPath in (client, Compile, fullOptJS)).value
     },
     addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.7.1"),
     libraryDependencies ++= Seq(
@@ -33,7 +33,7 @@ lazy val root = project.in(file("."))
 lazy val client = project.in(file("client"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
-    unmanagedSourceDirectories in Compile += baseDirectory.value / ".." / "shared" / "main" / "scala",
+    Compile / unmanagedSourceDirectories += baseDirectory.value / ".." / "shared" / "main" / "scala",
     libraryDependencies ++= Seq(
       Dependencies.autowire.value,
       Dependencies.dom.value,

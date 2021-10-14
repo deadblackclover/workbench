@@ -24,7 +24,7 @@ object WorkbenchSplicePlugin extends AutoPlugin {
       val streamsValue = streams.value
 
       var files: List[String] = Nil
-      ((crossTarget in Compile).value * "*.js").get.foreach { (x: File) =>
+      ((Compile / crossTarget).value * "*.js").get.foreach { (x: File) =>
         streamsValue.log.info("workbench: Checking " + x.getName)
         FileFunction.cached(streamsValue.cacheDirectory / x.getName, FilesInfo.lastModified, FilesInfo.lastModified) { (f: Set[File]) =>
           val fsPath = f.head.getAbsolutePath.drop(new File("").getAbsolutePath.length)
@@ -61,7 +61,7 @@ object WorkbenchSplicePlugin extends AutoPlugin {
         }
       }
     },
-    spliceBrowsers := spliceBrowsers.triggeredBy(fastOptJS in Compile).value
+    spliceBrowsers := spliceBrowsers.triggeredBy(Compile / fastOptJS).value
   )
 
   override def projectSettings = spliceSettings
