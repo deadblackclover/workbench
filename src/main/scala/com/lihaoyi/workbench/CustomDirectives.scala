@@ -13,7 +13,6 @@ import akka.http.scaladsl.server.directives.RouteDirectives.reject
 
 import scala.annotation.tailrec
 
-
 /**
 
   Akka was made more secure via
@@ -31,30 +30,29 @@ object CustomDirectives {
   private val followSymlinks = true
 
   /**
-   * Same as `getFromBrowseableDirectories` with only one directory.
-   *
-   * @group fileandresource
-   */
+    * Same as `getFromBrowseableDirectories` with only one directory.
+    *
+    * @group fileandresource
+    */
   def getFromBrowseableDirectory(directory: String)(implicit renderer: DirectoryRenderer, resolver: ContentTypeResolver): Route =
     getFromBrowseableDirectories(directory)
 
   /**
-   * Serves the content of the given directories as a file system browser, i.e. files are sent and directories
-   * served as browseable listings.
-   *
-   * @group fileandresource
-   */
+    * Serves the content of the given directories as a file system browser, i.e. files are sent and directories
+    * served as browseable listings.
+    *
+    * @group fileandresource
+    */
   def getFromBrowseableDirectories(directories: String*)(implicit renderer: DirectoryRenderer, resolver: ContentTypeResolver): Route = {
     directories.map(getFromDirectory).reduceLeft(_ ~ _) ~ listDirectoryContents(directories: _*)
   }
 
-
   /**
-   * Completes GET requests with the content of a file underneath the given directory.
-   * If the file cannot be read the Route rejects the request.
-   *
-   * @group fileandresource
-   */
+    * Completes GET requests with the content of a file underneath the given directory.
+    * If the file cannot be read the Route rejects the request.
+    *
+    * @group fileandresource
+    */
   def getFromDirectory(directoryName: String)(implicit resolver: ContentTypeResolver): Route =
     extractUnmatchedPath { unmatchedPath ⇒
       extractLog { log ⇒
@@ -82,7 +80,10 @@ object CustomDirectives {
         case Uri.Path.Segment(head, tail) ⇒
           if (head.indexOf('/') >= 0 || head.indexOf('\\') >= 0 || head == "..") {
             log.warning("File-system path for base [{}] and Uri.Path [{}] contains suspicious path segment [{}], " +
-              "GET access was disallowed", base, path, head)
+                          "GET access was disallowed",
+                        base,
+                        path,
+                        head)
             ""
           } else rec(tail, result.append(head))
       }
@@ -90,13 +91,14 @@ object CustomDirectives {
   }
 
   private def checkIsSafeDescendant(basePath: String, finalPath: String, log: LoggingAdapter): String = {
-    val baseFile = new File(basePath)
-    val finalFile = new File(finalPath)
+    val baseFile           = new File(basePath)
+    val finalFile          = new File(finalPath)
     val canonicalFinalPath = finalFile.getCanonicalPath
 
-    if ( !followSymlinks && !canonicalFinalPath.startsWith(baseFile.getCanonicalPath)) {
-      log.warning(s"[$finalFile] points to a location that is not part of [$baseFile]. This might be a directory " +
-        "traversal attempt.")
+    if (!followSymlinks && !canonicalFinalPath.startsWith(baseFile.getCanonicalPath)) {
+      log.warning(
+        s"[$finalFile] points to a location that is not part of [$baseFile]. This might be a directory " +
+          "traversal attempt.")
       ""
     } else canonicalFinalPath
   }

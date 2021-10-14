@@ -22,8 +22,8 @@ import scala.util.{Failure, Success}
 case class PromiseMessage(p: Promise[ujson.Arr])
 
 class WorkbenchActor extends Actor {
-  private var waitingActors = List.empty[PromiseMessage]
-  private var queuedMessages = List.empty[ujson.Value]
+  private var waitingActors        = List.empty[PromiseMessage]
+  private var queuedMessages       = List.empty[ujson.Value]
   private var numActorsLastRespond = 0
 
   /**
@@ -65,13 +65,11 @@ class WorkbenchActor extends Actor {
   }
 }
 
-
-class Server(
-  url: String,
-  port: Int,
-  defaultRootObject: Option[String] = None,
-  rootDirectory: Option[String] = None,
-  useCompression: Boolean = false) {
+class Server(url: String,
+             port: Int,
+             defaultRootObject: Option[String] = None,
+             rootDirectory: Option[String] = None,
+             useCompression: Boolean = false) {
   val corsHeaders: List[ModeledHeader] =
     List(
       `Access-Control-Allow-Methods`(OPTIONS, GET, POST),
@@ -80,7 +78,6 @@ class Server(
       `Access-Control-Max-Age`(1728000)
     )
   val cl: ClassLoader = getClass.getClassLoader
-
 
   implicit val system: ActorSystem = ActorSystem(
     "Workbench-System",
@@ -98,7 +95,6 @@ class Server(
     }
   }
 
-
   /**
     * Actor meant to handle long polling, buffering messages or waiting actors
     */
@@ -111,12 +107,10 @@ class Server(
     * - Any other GET request just pulls from the local filesystem
     * - POSTs to /notifications get routed to the longPoll actor
     */
-
-
   // needed for the future map/flatmap in the end
   implicit val executionContext: ExecutionContext = system.dispatcher
 
-  private val serverBinding = new AtomicReference[Http.ServerBinding]()
+  private val serverBinding    = new AtomicReference[Http.ServerBinding]()
   private val encoder: Encoder = if (useCompression) Gzip else NoCoding
 
   var serverStarted = false
@@ -124,11 +118,7 @@ class Server(
   def startServer(): Unit = {
     if (serverStarted) return
     serverStarted = true
-    val bindingFuture = Http().bindAndHandle(
-      handler = routes,
-      interface = url,
-      port = port,
-      settings = ServerSettings(system))
+    val bindingFuture = Http().bindAndHandle(handler = routes, interface = url, port = port, settings = ServerSettings(system))
 
     bindingFuture.onComplete {
       case Success(binding) ⇒
@@ -148,8 +138,7 @@ class Server(
             getClass.getClassLoader.getResourceAsStream("client-opt.js")
           )
 
-          complete(
-            s"""
+          complete(s"""
                |(function(){
                |  $body
                |

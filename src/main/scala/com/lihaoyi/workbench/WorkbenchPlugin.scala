@@ -22,7 +22,6 @@ object WorkbenchPlugin extends AutoPlugin {
       streams.value.log.info("workbench: Reloading Pages...")
       server.value.Wire[WorkbenchApi].reload().call()
     },
-
     refreshBrowsers := refreshBrowsers.triggeredBy(fastOptJS in Compile).value
   )
 

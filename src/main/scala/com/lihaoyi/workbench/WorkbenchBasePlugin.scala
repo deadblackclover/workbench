@@ -28,11 +28,11 @@ object WorkbenchBasePlugin extends AutoPlugin {
 
     }
 
-    val localUrl = settingKey[(String, Int)]("localUrl")
+    val localUrl                   = settingKey[(String, Int)]("localUrl")
     val workbenchDefaultRootObject = settingKey[Option[(String, String)]]("path to defaultRootObject served on `/` and rootDirectory")
-    val workbenchCompression = settingKey[Boolean]("use gzip compression on HTTP responses")
-    val workbenchStartMode = settingKey[StartMode](
-      "should the web server start on sbt load, on compile, or only by manually running `startWorkbenchServer`")
+    val workbenchCompression       = settingKey[Boolean]("use gzip compression on HTTP responses")
+    val workbenchStartMode =
+      settingKey[StartMode]("should the web server start on sbt load, on compile, or only by manually running `startWorkbenchServer`")
     val startWorkbenchServer = taskKey[Unit]("start local web server manually")
   }
   import autoImport._
@@ -45,23 +45,18 @@ object WorkbenchBasePlugin extends AutoPlugin {
     workbenchDefaultRootObject := None,
     workbenchCompression := false,
     (extraLoggers in ThisBuild) := {
-      val clientLogger = new AbstractAppender(
-        "FakeAppender",
-        null,
-        PatternLayout.createDefaultLayout(),
-        true,
-        Array.empty) {
+      val clientLogger = new AbstractAppender("FakeAppender", null, PatternLayout.createDefaultLayout(), true, Array.empty) {
         override def append(event: Log4JLogEvent): Unit = {
 
-          val level = sbt.internal.util.ConsoleAppender.toLevel(event.getLevel)
+          val level   = sbt.internal.util.ConsoleAppender.toLevel(event.getLevel)
           val message = event.getMessage
 
           message match {
             case o: ObjectMessage =>
               o.getParameter match {
-                case e: sbt.internal.util.StringEvent => server.value.Wire[WorkbenchApi].print(level.toString, e.message).call()
+                case e: sbt.internal.util.StringEvent    => server.value.Wire[WorkbenchApi].print(level.toString, e.message).call()
                 case e: sbt.internal.util.ObjectEvent[_] => server.value.Wire[WorkbenchApi].print(level.toString, e.message.toString).call()
-                case _ => server.value.Wire[WorkbenchApi].print(level.toString, message.getFormattedMessage).call()
+                case _                                   => server.value.Wire[WorkbenchApi].print(level.toString, message.getFormattedMessage).call()
               }
             case _ => server.value.Wire[WorkbenchApi].print(level.toString, message.getFormattedMessage).call()
           }
@@ -69,21 +64,24 @@ object WorkbenchBasePlugin extends AutoPlugin {
       }
       clientLogger.start()
       val currentFunction = extraLoggers.value
-      key: ScopedKey[_] => clientLogger +: currentFunction(key)
+      key: ScopedKey[_] =>
+        clientLogger +: currentFunction(key)
     },
     server := {
-      val server = new Server(localUrl.value._1, localUrl.value._2,
-        workbenchDefaultRootObject.value.map(_._1), workbenchDefaultRootObject.value.map(_._2), workbenchCompression.value)
+      val server = new Server(localUrl.value._1,
+                              localUrl.value._2,
+                              workbenchDefaultRootObject.value.map(_._1),
+                              workbenchDefaultRootObject.value.map(_._2),
+                              workbenchCompression.value)
       if (workbenchStartMode.value == OnSbtLoad) server.startServer()
       server
     },
     workbenchStartMode := OnSbtLoad,
     startWorkbenchServer := server.value.startServer(),
     (compile in Compile) := (compile in Compile)
-      .dependsOn(
-        Def.task {
-          if (workbenchStartMode.value == OnCompile) server.value.startServer()
-        })
+      .dependsOn(Def.task {
+        if (workbenchStartMode.value == OnCompile) server.value.startServer()
+      })
       .value,
     (onUnload in Global) := {
       (onUnload in Global).value.compose { state =>
@@ -94,5 +92,5 @@ object WorkbenchBasePlugin extends AutoPlugin {
   )
 
   private def getScopeId(scope: ScopeAxis[sbt.Reference]): String = s"${scope.hashCode()}"
-  override def projectSettings: Seq[Setting[_]] = workbenchSettings
+  override def projectSettings: Seq[Setting[_]]                   = workbenchSettings
 }

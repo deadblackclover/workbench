@@ -14,8 +14,8 @@ lazy val root = project.in(file("."))
   .settings(
     name := "workbench",
     unmanagedSourceDirectories in Compile += baseDirectory.value /  "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Test += baseDirectory.value / "shared" / "test" / "scala",
-    publishArtifact in Test := false,
+    // unmanagedSourceDirectories in Test += baseDirectory.value / "shared" / "test" / "scala",
+    // publishArtifact in Test := false,
     (resources in Compile) += {
       (fullOptJS in (client, Compile)).value
       (artifactPath in (client, Compile, fullOptJS)).value
