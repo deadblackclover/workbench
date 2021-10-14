@@ -13,6 +13,7 @@ lazy val root = project.in(file("."))
   .enablePlugins(SbtPlugin)
   .settings(
     name := "workbench",
+    sbtPlugin := true,
     Compile / unmanagedSourceDirectories += baseDirectory.value /  "shared" / "main" / "scala",
     (Compile / resources) += {
       (client / Compile / fullOptJS).value
