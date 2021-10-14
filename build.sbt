@@ -17,8 +17,6 @@ lazy val root = project.in(file("."))
     (Compile / resources) += {
       (client / Compile / fullOptJS).value
       (client / Compile / fullOptJS / artifactPath).value
-      // (fullOptJS in (client, Compile)).value
-      // (artifactPath in (client, Compile, fullOptJS)).value
     },
     addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.7.1"),
     libraryDependencies ++= Seq(
