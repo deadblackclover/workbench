@@ -1,6 +1,5 @@
 package com.lihaoyi.workbench
 
-import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.scalajs.js

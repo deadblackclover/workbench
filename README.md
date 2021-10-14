@@ -1,7 +1,7 @@
 Workbench
 ---------
 
-![Example](https://github.com/lihaoyi/scala-js-workbench/blob/master/Example.png?raw=true)
+![Example](https://github.com/deadblackclover/workbench/blob/master/docs/example.png?raw=true)
 
 A SBT plugin for [scala-js](https://scala-js.org) projects to make development in the browser more pleasant.
 
@@ -16,7 +16,7 @@ Installation
 - Add to your `project/plugins.sbt`
 ```scala
 // for sbt 1.0+
-addSbtPlugin("com.lihaoyi" % "workbench" % "0.4.1")
+addSbtPlugin("com.lihaoyi" % "workbench" % "0.5.0")
 // for sbt 0.13.x
 addSbtPlugin("com.lihaoyi" % "workbench" % "0.3.1")
 ```
@@ -31,7 +31,7 @@ enablePlugins(WorkbenchPlugin)
 
 ### Usage
 
-Once the above installation steps are completed, simply open your desired HTML file via `http://localhost:12345` with the URL path being any file part relative to your project root. e.g. `localhost:12345/target/scala-2.12/classes/index.html`. This should serve up the HTML file and connect it to workbench.
+Once the above installation steps are completed, simply open your desired HTML file via `http://localhost:12345` with the URL path being any file part relative to your project root. e.g. `localhost:12345/target/scala-2.13/classes/index.html`. This should serve up the HTML file and connect it to workbench.
 
 If you want to serve a defaultRootObject on `http://localhost:12345` and serve only files from a root directory you can set this via:
 ```scala
@@ -87,7 +87,7 @@ This means that there are many changes that `spliceBrowsers` does not support, s
 
 And many more. If the change is something that Workbench does not support, you'll see errors in the browser console:
 
-![Example](https://github.com/lihaoyi/scala-js-workbench/blob/master/Error.png?raw=true)
+![Example](https://github.com/deadblackclover/workbench/blob/master/docs/error.png?raw=true)
 
 And you'll need to refresh the page.
 
@@ -104,10 +104,12 @@ With this done, you should be receiving the SBT logspam (compilation, warnings, 
 
 # Development
 
+To use the library in the example, you need to publish the library locally `sbt publishLocal`. Also, do not forget to update the version in `plugins.sbt` to the local version of the library.
+
 To develop, go into `example/` and run `sbt ~fastOptJS`. Then you can go to
 
 ```
-http://localhost:12345/target/scala-2.12/classes/index-dev.html
+http://localhost:12345/target/scala-2.13/classes/index-dev.html
 ```
 
 and see a small sierpinski-triangle application. Editing the code within `example/` should cause the SBT log-spam to appear in the browser console, and changes (e.g. changing the color of the background fill) should cause a recompile and updating of the browser animation.
@@ -156,27 +158,3 @@ Change Log
 - Properly kill the spray server on plugin unload, `sbt reload` now works 
 - Swap out `play-json` with `upickle`
 - (Internally) separate Spray server code with SBT madness
-
-License
--------
-The MIT License (MIT)
-
-Copyright (c) 2013 Li Haoyi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
