@@ -16,9 +16,7 @@ Installation
 - Add to your `project/plugins.sbt`
 ```scala
 // for sbt 1.0+
-addSbtPlugin("com.lihaoyi" % "workbench" % "0.5.0")
-// for sbt 0.13.x
-addSbtPlugin("com.lihaoyi" % "workbench" % "0.3.1")
+addSbtPlugin("net.cipherdogs" % "workbench" % "0.5.0")
 ```
 - Add to your `build.sbt`
 ```scala

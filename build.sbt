@@ -2,7 +2,7 @@ import sbt.Keys._
 
 inThisBuild(Def.settings(
   version := "0.5.0",
-  organization := "com.lihaoyi",
+  organization := "net.cipherdogs",
   scalaVersion := "2.12.11",
   scalacOptions ++= Seq("-feature", "-deprecation", "-Ywarn-unused-import"),
   semanticdbEnabled := true, // enable SemanticDB
@@ -14,6 +14,13 @@ lazy val root = project.in(file("."))
   .settings(
     name := "workbench",
     sbtPlugin := true,
+    publishMavenStyle := true,
+    publishM2 := {
+      publishM2.value
+
+      val d = file(sys.env("HOME")) / s".m2/repository/net/cipherdogs/workbench_${scalaBinaryVersion.value}_${sbtBinaryVersion.value}"
+      d.renameTo(file(sys.env("HOME")) / ".m2/repository/net/cipherdogs/workbench")
+    },
     Compile / unmanagedSourceDirectories += baseDirectory.value /  "shared" / "main" / "scala",
     (Compile / resources) += {
       (client / Compile / fullOptJS).value

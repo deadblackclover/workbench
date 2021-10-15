@@ -1,4 +1,4 @@
-package com.lihaoyi.workbench
+package net.cipherdogs.workbench
 
 import sbt._
 import sbt.Keys._

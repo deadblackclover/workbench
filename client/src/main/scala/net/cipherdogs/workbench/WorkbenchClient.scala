@@ -1,4 +1,4 @@
-package com.lihaoyi.workbench
+package net.cipherdogs.workbench
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

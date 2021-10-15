@@ -1,4 +1,4 @@
-package com.lihaoyi
+package net.cipherdogs
 
 package object workbench {
 

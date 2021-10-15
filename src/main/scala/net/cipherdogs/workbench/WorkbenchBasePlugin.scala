@@ -1,4 +1,4 @@
-package com.lihaoyi.workbench
+package net.cipherdogs.workbench
 
 import autowire._
 import org.apache.logging.log4j.core.appender.AbstractAppender
